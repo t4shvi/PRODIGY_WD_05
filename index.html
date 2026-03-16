@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Weather App 🌦️</title>
+
+<style>
+body{
+  font-family: system-ui, sans-serif;
+  background: linear-gradient(to top, #87ceeb, #e0f7ff);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  margin:0;
+}
+
+.app{
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(12px);
+  color:#003049;
+  padding:30px;
+  border-radius:20px;
+  width:320px;
+  text-align:center;
+  box-shadow:0 10px 30px rgba(0,0,0,0.2);
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-8px);}
+}
+
+h2{
+  margin-bottom:15px;
+}
+
+input{
+  padding:10px;
+  width:65%;
+  border:none;
+  border-radius:8px;
+  outline:none;
+  margin-right:5px;
+}
+
+button{
+  padding:10px;
+  margin-top:10px;
+  border:none;
+  border-radius:8px;
+  background:#ffffff;
+  color:#0077b6;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+button:hover{
+  background:#0077b6;
+  color:white;
+  transform:scale(1.05);
+}
+
+#weather{
+  margin-top:20px;
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(10px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+.temp{
+  font-size:2.2rem;
+  margin:10px 0;
+}
+
+#weather p{
+  margin:5px 0;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+  <h2>🌤️ Weather</h2>
+
+  <input type="text" id="city" placeholder="Enter city">
+  <button onclick="getWeather()">Search 🔍</button>
+
+  <div id="weather">
+    <p>✨ Enter a city</p>
+  </div>
+</div>
+
+<script>
+const apiKey = "67b541f81f454926980191521261603";
+
+function getWeather(){
+
+  const city = document.getElementById("city").value;
+
+  fetch(`https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}`)
+  .then(res => res.json())
+  .then(data => {
+
+    document.getElementById("weather").innerHTML = `
+      <div class="temp">🌡️ ${data.current.temp_c}°C</div>
+      <p>☁️ ${data.current.condition.text}</p>
+      <p>📍 ${data.location.name}</p>
+    `;
+  })
+  .catch(() => {
+    document.getElementById("weather").innerHTML = "❌ City not found";
+  });
+
+}
+</script>
+
+</body>
+</html>
